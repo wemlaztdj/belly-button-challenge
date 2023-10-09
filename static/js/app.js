@@ -1,7 +1,7 @@
 var url ='https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json'
 
 d3.json(url).then(function(data) {
-
+  console.log(data);
     chart= data.samples
     thematadata= data.metadata
 
@@ -30,6 +30,7 @@ d3.json(url).then(function(data) {
       barchart(selectedValue);
       bubblechart(selectedValue);
       mata(selectedValue);
+      Gauge(selectedValue);
 
   }
 
@@ -161,3 +162,41 @@ d3.json(url).then(function(data) {
      
   
   }
+
+function Gauge(selectedValue){
+  Gaugeresult = searchmataById(selectedValue);
+
+  var data = [
+    {
+      domain: { x: [0, 1], y: [0, 1] },
+      value: Gaugeresult.wfreq,
+      title: { text: "Belly Button Washing Frequency<br><span style='font-size:0.8em;color:gray'>Scrubs per Week</span><br>" },
+
+      type: "indicator",
+      mode: "gauge+number",
+      gauge: {
+        axis: { range: [null, 9] },
+        // bar: { color: "red" },
+        steps: [
+          { range: [0, 1], color: "rgb(255, 255, 255)" },
+          { range: [1, 2], color: "rgb(204, 255, 204)" },
+          { range: [2, 3], color: "rgb(179, 255, 179)" },
+          { range: [3, 4], color: "rgb(153, 255, 153)" },
+          { range: [4, 5], color: "rgb(128, 255, 128)" },
+          { range: [5, 6], color: "rgb(102, 255, 102)" },
+          { range: [6, 7], color: "rgb(77, 255, 77)" },
+          { range: [7, 8], color: "rgb(51, 255, 51)" },
+          { range: [8, 9], color: "rgb(0, 255, 0)" },
+        ],
+        threshold: {
+          line: { color: "red", width: 4 },
+          thickness: 0.75,
+          value: Gaugeresult.wfreq
+        }
+      }
+    }
+  ];
+
+Plotly.newPlot('gauge', data);
+
+}
