@@ -1,11 +1,10 @@
 var url ='https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json'
-var chart;
-var matadata;
+
 d3.json(url).then(function(data) {
-    console.log(data);
+
     chart= data.samples
-    matadata= data.metadata
-    console.log(matadata);
+    thematadata= data.metadata
+
     var select = document.getElementById('selDataset');
     select.innerHTML = '';
 
@@ -26,8 +25,8 @@ d3.json(url).then(function(data) {
 
 
   function optionChanged(selectedValue) {
-    console.log('Selected Value:', selectedValue);
-    //update the bar chart
+    // console.log('Selected Value:', selectedValue);
+    //update the  charts
       barchart(selectedValue);
       bubblechart(selectedValue);
       mata(selectedValue);
@@ -35,12 +34,12 @@ d3.json(url).then(function(data) {
   }
 
   function searchById(theid) {
-    console.log(chart);
+
     return chart.filter(item=> item.id===theid)[0]
   }
   function searchmataById(theid) {
-    console.log(matadata);
-    return matadata.filter(item=> item.id===theid)[0]
+
+    return thematadata.filter(item=> item.id==theid)[0]
   }
 
   function barchart(selectedValue){
@@ -54,10 +53,7 @@ d3.json(url).then(function(data) {
     var ids = result.otu_ids.slice(0,10)
     var values = result.sample_values.slice(0,10)
     var lables= result.otu_labels.slice(0,10)
-    
-    console.log('Selected ids:', ids);
-    console.log('Selected values:', values);
-    console.log('Selected lables:', lables);
+
 
     var barlist=[]
     for (var i=0;i<ids.length;i++){
@@ -82,7 +78,7 @@ d3.json(url).then(function(data) {
 
 
         type: 'bar',
-        orientation: 'h'  // This makes the bar chart horizontal
+        orientation: 'h'  
       };
       
 
@@ -122,47 +118,46 @@ d3.json(url).then(function(data) {
 
   function mata(selectedValue){
 
-    var mataresult = searchmataById(selectedValue);
-    var table = d3.select("sample-metadata");
-    table.html("");
-    console.log('mataresult:'+mataresult);
+    mataresult = searchmataById(selectedValue);
+    var div = d3.select("#sample-metadata");
+    div.selectAll("table").remove();
+    var tbody = div.append("table");
+    
 
-
-    var row = table.append("tr");
+    var row = tbody.append("tr");
     
    
-      row.append("td").text("id");
-      row.append("td").text(result.id);
-     
-    row = table.append("tr");
+      row.append("td").text("id: "+mataresult.id);
 
-      row.append("td").text("ethnicity");
-      row.append("td").text(result.ethnicity);
      
-    row = table.append("tr");
-      
-      row.append("td").text("gender");
-      row.append("td").text(result.gender);
+    row = tbody.append("tr");
+
+      row.append("td").text("ethnicity: "+mataresult.ethnicity);
+ 
      
-    row = table.append("tr");
+    row = tbody.append("tr");
       
-      row.append("td").text("age");
-      row.append("td").text(result.age);
+      row.append("td").text("gender: "+ mataresult.gender);
+      
+    row = tbody.append("tr");
+      
+      row.append("td").text("age: "+ mataresult.age);
+
      
-    row = table.append("tr");
+    row = tbody.append("tr");
       
-      row.append("td").text("location");
-      row.append("td").text(result.location);
+      row.append("td").text("location: "+ mataresult.location);
+
      
-    row = table.append("tr");
+    row = tbody.append("tr");
       
-      row.append("td").text("bbtype");
-      row.append("td").text(result.bbtype);
+      row.append("td").text("bbtype: "+ mataresult.bbtype);
+
      
-    row = table.append("tr");
+    row = tbody.append("tr");
       
-      row.append("td").text("wfreq");
-      row.append("td").text(result.wfreq);
+      row.append("td").text("wfreq: "+ mataresult.wfreq);
+
      
   
   }
